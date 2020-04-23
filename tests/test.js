@@ -88,7 +88,7 @@ describe("users", () => {
   });
 });
 
-describe("channels", () => {
+describe.only("channels", () => {
   describe("#create", () => {
     const params = { name: "" };
 
@@ -101,6 +101,7 @@ describe("channels", () => {
     it("creates a channel", () =>
       models.channels.create(params).then((channel) => {
         expect(channel).to.include({ name: params.name });
+        console.log("##", channel.id);
         expect(channel.id).to.be.a("number");
       }));
 
