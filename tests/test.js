@@ -100,8 +100,8 @@ describe.only("channels", () => {
 
     it("creates a channel", () =>
       models.channels.create(params).then((channel) => {
+        console.log("TTTTT", channel);
         expect(channel).to.include({ name: params.name });
-        console.log("##", channel.id);
         expect(channel.id).to.be.a("number");
       }));
 

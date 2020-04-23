@@ -1,42 +1,36 @@
-const validateChannelName = (uName) =>
-  typeof uName === "string" && uName.replace(" ", "").length >= 2;
-
-const validateID = (uID) => {
-  if (uID === undefined) {
-    return false;
-  }
-  return true;
-};
+const validateName = (cName) =>
+  typeof cName === "string" && cName.replace(" ", "").length >= 2; // make sure space doesn't count
 
 module.exports = (knex, Channel) => {
   return (params) => {
-    const username = params.username;
-    let id = params.id;
+    // get from client input params
+    const name = params.name;
 
-    if (!validateChannelName(username)) {
+    if (!validateName(name)) {
       return Promise.reject(
-        new Error("Username must be provided, and be at least two characters")
+        new Error(
+          "Channel name must be provided, and be at least two characters"
+        )
       );
-    }
-    if (!validateID(id)) {
-      id = 0;
     }
 
     return knex("channels")
-      .insert({ username: username.toLowerCase() })
+      .insert({ name: name.toLowerCase() })
       .then(() => {
         return knex("channels")
-          .where({ username: username.toLowerCase() })
+          .where({ name: name.toLowerCase() })
           .select();
       })
-      .then((chan) => new Channel(chan.pop())()) // create a user model out of the plain database response
+      .then((channels) => {
+        new Channel(channels.pop())();
+      })
       .catch((err) => {
         // sanitize known errors
         if (
           err.message.match("duplicate key value") ||
           err.message.match("UNIQUE constraint failed")
         )
-          return Promise.reject(new Error("That channel already exists"));
+          return Promise.reject(new Error("That channel name already exists"));
 
         // throw unknown errors
         return Promise.reject(err);

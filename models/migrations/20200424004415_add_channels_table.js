@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  // create the 'channels' table with two  columns
+  // create the 'channels' table with two columns
 
   return knex.schema.createTable("channels", (t) => {
     t.increments() // auto-incrementing id column
