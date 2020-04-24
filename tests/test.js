@@ -124,7 +124,7 @@ describe("channels", () => {
     });
   });
 
-  describe.only("#list", () => {
+  describe("#list", () => {
     const channelNames = ["general", "random"];
     const channels = channelNames.map((name) => ({ name }));
     before(() => Promise.all(channels.map(models.channels.create)));
@@ -174,13 +174,15 @@ describe("channel_messages", () => {
       .then(() => knex("users").del())
   );
 
-  describe("#create", () => {
+  describe.only("#create", () => {
     after(() => knex("channel_messages").del());
 
     it("creates a message", () =>
       models.channelMessages
         .create({ fromId, channelId, message })
         .then((messages) => {
+          console.log(messages, "AAAAAAAA");
+          console.log("TTTT", messages[0]);
           expect(messages[0]).to.include({
             fromUser: "rp-3",
             toChannel: "general",
