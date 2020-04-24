@@ -88,7 +88,7 @@ describe("users", () => {
   });
 });
 
-describe.only("channels", () => {
+describe("channels", () => {
   describe("#create", () => {
     const params = { name: "" };
 
@@ -100,7 +100,6 @@ describe.only("channels", () => {
 
     it("creates a channel", () =>
       models.channels.create(params).then((channel) => {
-        console.log("TTTTT", channel);
         expect(channel).to.include({ name: params.name });
         expect(channel.id).to.be.a("number");
       }));
@@ -125,7 +124,7 @@ describe.only("channels", () => {
     });
   });
 
-  describe("#list", () => {
+  describe.only("#list", () => {
     const channelNames = ["general", "random"];
     const channels = channelNames.map((name) => ({ name }));
     before(() => Promise.all(channels.map(models.channels.create)));

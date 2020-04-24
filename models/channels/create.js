@@ -22,7 +22,7 @@ module.exports = (knex, Channel) => {
           .select();
       })
       .then((channels) => {
-        new Channel(channels.pop())();
+        return new Channel(channels.pop());
       })
       .catch((err) => {
         // sanitize known errors
@@ -30,7 +30,7 @@ module.exports = (knex, Channel) => {
           err.message.match("duplicate key value") ||
           err.message.match("UNIQUE constraint failed")
         )
-          return Promise.reject(new Error("That channel name already exists"));
+          return Promise.reject(new Error("That channel already exists"));
 
         // throw unknown errors
         return Promise.reject(err);
